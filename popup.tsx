@@ -1,24 +1,21 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
+
+import "@arco-design/web-react/dist/css/arco.css"
+import "./index.css"
+
+import { ReplayerCreation } from "~components/ReplayerCreation"
+import { ReplayerList } from "~components/ReplayerList"
+import { Message } from "~node_modules/@arco-design/web-react/es"
 
 function IndexPopup() {
-  const [data, setData] = useState("")
-
+  const [isCreated, setIsCreated] = useState(false)
   return (
-    <div
-      style={{
-        padding: 16
-      }}>
-      <h2>
-        Welcome to your{" "}
-        <a href="https://www.plasmo.com" target="_blank">
-          Plasmo
-        </a>{" "}
-        Extension!
-      </h2>
-      <input onChange={(e) => setData(e.target.value)} value={data} />
-      <a href="https://docs.plasmo.com" target="_blank">
-        View Docs
-      </a>
+    <div className="p-4 flex flex-col items-center w-[400px] gap-[10px]">
+      {isCreated ? (
+        <ReplayerCreation setIsCreated={setIsCreated} />
+      ) : (
+        <ReplayerList setIsCreated={setIsCreated} />
+      )}
     </div>
   )
 }
