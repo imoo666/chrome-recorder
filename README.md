@@ -1,33 +1,63 @@
-This is a [Plasmo extension](https://docs.plasmo.com/) project bootstrapped with [`plasmo init`](https://www.npmjs.com/package/plasmo).
+# 前言
 
-## Getting Started
+重复的工作，冗长的表单，消耗了我们太多的时间。
 
-First, run the development server:
+**Recorder** 是天工 maas 团队开发的一个浏览器插件，用于解决浏览器上的各种重复性工作。最常用的使用场景是自动填写各种表单。
 
-```bash
-pnpm dev
-# or
-npm run dev
-```
 
-Open your browser and load the appropriate development build. For example, if you are developing for the chrome browser, using manifest v3, use: `build/chrome-mv3-dev`.
+![20250324-163405](https://github.com/user-attachments/assets/afd09299-489e-40e0-bbb3-49a6e9e1e325)
 
-You can start editing the popup by modifying `popup.tsx`. It should auto-update as you make changes. To add an options page, simply add a `options.tsx` file to the root of the project, with a react component default exported. Likewise to add a content page, add a `content.ts` file to the root of the project, importing some module and do some logic, then reload the extension on your browser.
+可以看到，当用户创建录像时，插件将**记录你当前所有的操作**。当回放录像时，插件将**自动操纵页面，将你之前所有的操作重新进行一遍**。
 
-For further guidance, [visit our Documentation](https://docs.plasmo.com/)
+  
 
-## Making production build
 
-Run the following:
+# 使用方向
 
-```bash
-pnpm build
-# or
-npm run build
-```
+-   测试工程师减少点点点的操作
+-   前后端调试接口省去填写的时间
+-   用户可以提前填好常用的数据，减少反复的写同样的内容（模版功能）
+-   将其视为草稿箱暂存内容
+-   ...
 
-This should create a production bundle for your extension, ready to be zipped and published to the stores.
+  
 
-## Submit to the webstores
 
-The easiest way to deploy your Plasmo extension is to use the built-in [bpp](https://bpp.browser.market) GitHub action. Prior to using this action however, make sure to build your extension and upload the first version to the store to establish the basic credentials. Then, simply follow [this setup instruction](https://docs.plasmo.com/framework/workflows/submit) and you should be on your way for automated submission!
+  
+
+
+# 安装步骤
+
+**仅需三步**，就能体验同款插件
+
+1.  打开浏览器-拓展程序的开发模式
+![image](https://github.com/user-attachments/assets/5b2619c3-52e2-4ced-99bd-2321e6cf46ca)
+
+
+2.  下载插件压缩包 https://github.com/imoo666/chrome-recorder/releases/tag/v1
+3.  双击**解压**，拖拽到刚才的浏览器-插件页面来，就会自动安装
+![image](https://github.com/user-attachments/assets/2ef2088a-23f7-4a73-b0f8-c0e1037625b0)
+
+看到它就是安装成功了。**安装成功后，建议重启一下浏览器，** 否则旧的标签页是不能直接使用该插件的
+
+  
+
+
+# 使用步骤
+
+点击插件即可启用
+
+![image](https://github.com/user-attachments/assets/e985fc1d-9ba4-4683-b409-7d023baca62e)
+
+
+
+# 注意事项
+
+1.  当目标页面进行了更新时，回放容易出现找不到元素的问题，可能会出现报错。
+1.  如果不处于与录制时相同的页面，并且直接点击了回放，可能会出现报错。
+1.  浏览器目前兼容 chrome、edge，不过理论上所有基于 chromium 开发的浏览器都可以直接使用。
+
+  
+
+
+其他问题，欢迎留言。
