@@ -5,7 +5,6 @@ import "./index.css"
 
 import { ReplayerCreation } from "~components/ReplayerCreation"
 import { ReplayerList } from "~components/ReplayerList"
-import { Message } from "~node_modules/@arco-design/web-react/es"
 
 function IndexPopup() {
   const [isCreated, setIsCreated] = useState(false)

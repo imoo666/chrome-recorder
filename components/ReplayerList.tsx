@@ -34,19 +34,49 @@ export const ReplayerList = ({ setIsCreated }: Props) => {
 
   // 从Chrome存储加载录制列表
   const loadRecordings = () => {
-    chrome.storage.local.get(["recordings"], (result) => {
+    chrome.storage.local.get(["recordings", "currentRecordingId"], (result) => {
       const loadedRecordings = result.recordings || []
+      const currentRecordingId = result.currentRecordingId
       setRecordings(loadedRecordings)
 
-      // 如果有选中的录制但已被删除，重置选中状态
-      if (
-        selectedRecord &&
-        !loadedRecordings.find((r) => r.id === selectedRecord)
-      ) {
+      setSelectedRecord(currentRecordingId)
+    })
+  }
+
+  // 删除录制
+  const handleDelete = () => {
+    if (!selectedRecord) return
+
+    chrome.storage.local.get(["recordings"], (result) => {
+      const existingRecordings = result.recordings || []
+      const updatedRecordings = existingRecordings.filter(
+        (r) => r.id !== selectedRecord
+      )
+
+      chrome.storage.local.set({ recordings: updatedRecordings }, () => {
         setSelectedRecord(undefined)
         setSelectedRecording(null)
-      }
+        loadRecordings()
+      })
+      chrome.storage.local.remove("currentRecordingId")
     })
+  }
+
+  // 启动回放
+  const handleClick = () => {
+    if (!selectedRecording) return
+
+    // 向当前选项卡发送回放指令和录制数据
+    sendMessage({
+      action: "replay",
+      recording: selectedRecording
+    })
+    window.close()
+  }
+
+  const handleSelect = (value: string) => {
+    setSelectedRecord(value)
+    chrome.storage.local.set({ currentRecordingId: value })
   }
 
   // 组件挂载时加载录制列表
@@ -57,6 +87,11 @@ export const ReplayerList = ({ setIsCreated }: Props) => {
     const handleMessage = (message) => {
       if (message.action === "updateRecordings") {
         loadRecordings()
+
+        // 如果消息中包含要选中的录制ID，则设置选中状态
+        if (message.selectedRecordingId) {
+          setSelectedRecord(message.selectedRecordingId)
+        }
       }
     }
 
@@ -77,36 +112,6 @@ export const ReplayerList = ({ setIsCreated }: Props) => {
     }
   }, [selectedRecord, recordings])
 
-  // 删除录制
-  const handleDelete = () => {
-    if (!selectedRecord) return
-
-    chrome.storage.local.get(["recordings"], (result) => {
-      const existingRecordings = result.recordings || []
-      const updatedRecordings = existingRecordings.filter(
-        (r) => r.id !== selectedRecord
-      )
-
-      chrome.storage.local.set({ recordings: updatedRecordings }, () => {
-        setSelectedRecord(undefined)
-        setSelectedRecording(null)
-        loadRecordings()
-      })
-    })
-  }
-
-  // 启动回放
-  const handleClick = () => {
-    if (!selectedRecording) return
-
-    // 向当前选项卡发送回放指令和录制数据
-    sendMessage({
-      action: "replay",
-      recording: selectedRecording
-    })
-    window.close()
-  }
-
   return (
     <>
       <div className="w-full border-b pb-2 flex flex-col gap-[4px]">
@@ -125,9 +130,7 @@ export const ReplayerList = ({ setIsCreated }: Props) => {
           options={recordings.map((r) => ({ label: r.name, value: r.id }))}
           placeholder="请选择录像"
           value={selectedRecord}
-          onChange={(value) => {
-            setSelectedRecord(value)
-          }}></Select>
+          onChange={handleSelect}></Select>
 
         {selectedRecord && (
           <Popconfirm

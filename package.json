@@ -1,9 +1,9 @@
 {
-  "name": "chrome-replayer",
-  "displayName": "Chrome replayer",
+  "name": "imoo-recorder",
+  "displayName": "imoo-recorder",
   "version": "0.0.1",
-  "description": "A basic Plasmo extension.",
-  "author": "Plasmo Corp. <foss@plasmo.com>",
+  "description": "浏览器的录制重放工具，用于减少重复性操作",
+  "author": "imoo",
   "scripts": {
     "dev": "plasmo dev",
     "build": "plasmo build",
@@ -12,6 +12,7 @@
   "dependencies": {
     "@arco-design/web-react": "^2.65.0",
     "clsx": "^2.1.1",
+    "css-selector-generator": "^3.6.9",
     "dayjs": "^1.11.13",
     "lodash": "^4.17.21",
     "plasmo": "0.90.3",
@@ -35,7 +36,11 @@
       "https://*/*"
     ],
     "permissions": [
-      "storage"
-    ]
+      "storage",
+      "activeTab"
+    ],
+    "background": {
+      "service_worker": "background.ts"
+    }
   }
 }

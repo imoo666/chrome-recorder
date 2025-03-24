@@ -14,6 +14,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      css-selector-generator:
+        specifier: ^3.6.9
+        version: 3.6.9
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
@@ -1948,6 +1951,9 @@ packages:
 
   css-select@4.3.0:
     resolution: {integrity: sha512-wPpOYtnsVontu2mODhA19JrqWxNsfdatRKd64kmpRbQgh1KtItko5sTnEpPdpSaJszTOhEMlF/RPz28qj4HqhQ==}
+
+  css-selector-generator@3.6.9:
+    resolution: {integrity: sha512-OXV+a4wlKs+8TGxTZ8g96mQOKz5QDVE52QYdYusdbcmt0XkJd6F9zkXpMZbRk3pwwRF+K2pJkj1DINpWm7Isqw==}
 
   css-tree@1.1.3:
     resolution: {integrity: sha512-tRpdppF7TRazZrjJ6v3stzv93qxRcSsFmW6cX0Zm2NVKpxE1WV1HblnghVv9TreireHkqI/VDEsfolRF1p6y7Q==}
@@ -5521,6 +5527,8 @@ snapshots:
       domhandler: 4.3.1
       domutils: 2.8.0
       nth-check: 2.1.1
+
+  css-selector-generator@3.6.9: {}
 
   css-tree@1.1.3:
     dependencies:

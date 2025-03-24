@@ -1,7 +1,6 @@
 import { useState } from "react"
 
-import { Button, Input, Tooltip } from "~node_modules/@arco-design/web-react/es"
-import { IconCheck, IconLeft } from "~node_modules/@arco-design/web-react/icon"
+import { Button, Input } from "~node_modules/@arco-design/web-react/es"
 import { sendMessage } from "~utils/sendMessage"
 
 interface Props {
