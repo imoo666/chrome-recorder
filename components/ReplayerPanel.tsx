@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react"
 
 import BasePanel from "./BasePanel"
-import type { Action, Recording } from "./types"
+import type { Action } from "./types"
 
 interface ReplayerPanelProps {
   isVisible: boolean

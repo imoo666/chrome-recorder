@@ -18,18 +18,11 @@ export const RecorderPanel: React.FC<RecorderPanelProps> = ({
 }) => {
   const [recordedActions, setRecordedActions] = useState<Action[]>([])
   const [isRecording, setIsRecording] = useState(false)
-  const [isRecordingCompleted, setIsRecordingCompleted] = useState(false)
 
   // 开始录制函数
   const startRecording = useCallback(() => {
     setRecordedActions([])
     setIsRecording(true)
-  }, [])
-
-  // 停止录制函数
-  const stopRecording = useCallback(() => {
-    setIsRecording(false)
-    setIsRecordingCompleted(true)
   }, [])
 
   // 点击事件处理器 - 使用最早的捕获阶段
@@ -108,7 +101,6 @@ export const RecorderPanel: React.FC<RecorderPanelProps> = ({
   // 保存录制功能
   const saveRecording = useCallback(() => {
     setIsRecording(false)
-    setIsRecordingCompleted(true)
 
     // 获取当前时间作为录制ID
     const recordingId = Date.now().toString()
@@ -147,7 +139,6 @@ export const RecorderPanel: React.FC<RecorderPanelProps> = ({
   // 重新录制
   const resetRecording = useCallback(() => {
     setRecordedActions([])
-    setIsRecordingCompleted(false)
   }, [])
 
   // 注册事件监听器 - 使用更底层的事件监听方式
@@ -181,7 +172,6 @@ export const RecorderPanel: React.FC<RecorderPanelProps> = ({
     const messageListener = (message) => {
       if (message.action === "start") {
         setIsVisible(true)
-        setIsRecordingCompleted(false)
         startRecording()
         localStorage.setItem("currentRecordingName", message.name)
       }
