@@ -11,7 +11,7 @@ export function getSelector(element: Element | null): string {
       // 匹配以"_数字"结尾的ID
       /^#.*_\d+$/,
 
-      /.*[.*].*$/,
+      /.*\[.*$/,
       /.*focus.*$/,
       /.*hover.*$/,
       /.*active.*$/,
