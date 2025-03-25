@@ -11,8 +11,9 @@ export function getSelector(element: Element | null): string {
       /^#.*_\d+$/,
       // 匹配以 ed 结尾的 class
       /.*ed$/,
-      // 匹配所有含有 checked 的任意选择器
-      /.*checked.*$/
+      // 匹配所有含有 checked/focus 的任意选择器
+      /.*checked.*$/,
+      /.*focus.*$/
     ]
   })
 }
