@@ -70,7 +70,17 @@ export const ReplayerPanel: React.FC<ReplayerPanelProps> = ({
 
         switch (action.type) {
           case "click":
-            element.click?.()
+            ;["mousedown", "mouseup", "click"].forEach((eventType) => {
+              const clickEvent = new MouseEvent(eventType, {
+                view: window,
+                bubbles: true,
+                cancelable: true,
+                clientX: 0,
+                clientY: 0,
+                button: 0
+              })
+              element.dispatchEvent(clickEvent)
+            })
             break
           case "keydown":
             // 创建并分发一个键盘事件
