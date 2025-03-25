@@ -70,18 +70,48 @@ export const ReplayerPanel: React.FC<ReplayerPanelProps> = ({
 
         switch (action.type) {
           case "click":
-            element.click()
+            element.click?.()
             break
           case "keydown":
             // 创建并分发一个键盘事件
             const keyEvent = new KeyboardEvent("keydown", {
               key: action.key,
               keyCode: action.keyCode,
-              code: action.key,
+              code:
+                action.code ||
+                (action.key.length === 1
+                  ? `Key${action.key.toUpperCase()}`
+                  : action.key),
               bubbles: true,
               cancelable: true
             })
             element.dispatchEvent(keyEvent)
+
+            // 特殊处理输入框元素
+            if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
+              // 更新输入框的值
+              if (action.key.length === 1) {
+                // 单个字符输入
+                const input = element as HTMLInputElement
+                const currentValue = input.value
+
+                input.value = currentValue + action.key
+
+                // 触发input事件
+                const inputEvent = new Event("input", { bubbles: true })
+                element.dispatchEvent(inputEvent)
+              } else if (action.key === "Backspace") {
+                // 处理退格键
+                const input = element as HTMLInputElement
+                const start = input.selectionStart || 0
+                const currentValue = input.value
+                input.value = currentValue.substring(0, start - 1)
+
+                // 触发input事件
+                const inputEvent = new Event("input", { bubbles: true })
+                element.dispatchEvent(inputEvent)
+              }
+            }
             break
           case "scroll":
             if (

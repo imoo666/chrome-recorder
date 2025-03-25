@@ -5,6 +5,7 @@ export interface Action {
   value?: string
   key?: string
   keyCode?: number
+  code?: string
   timestamp: number
   scrollX?: number
   scrollY?: number

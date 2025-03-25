@@ -33,52 +33,46 @@ export const RecorderPanel: React.FC<RecorderPanelProps> = ({
   }, [])
 
   // 点击事件处理器
-  const handleClick = useCallback(
-    (event: PointerEvent) => {
-      const target = event.target as HTMLElement
-      const selector = getSelector(target)
+  const handleClick = useCallback((event: PointerEvent) => {
+    const target = event.target as HTMLElement
+    const selector = getSelector(target)
 
-      // 如果是组件库的隐藏事件？
-      if (event.pointerId === -1) {
-        return
-      }
-      // 点击的是录制悬浮窗
-      if (selector.includes("plasmo")) {
-        return
-      }
+    // 如果是组件库的隐藏事件？
+    if (event.pointerId === -1) {
+      return
+    }
+    // 点击的是录制悬浮窗
+    if (selector.includes("plasmo")) {
+      return
+    }
 
-      setRecordedActions((prev) => [
-        ...prev,
-        {
-          type: "click",
-          target: selector,
-          timestamp: Date.now()
-        }
-      ])
-    },
-    [isRecording]
-  )
+    setRecordedActions((prev) => [
+      ...prev,
+      {
+        type: "click",
+        target: selector,
+        timestamp: Date.now()
+      }
+    ])
+  }, [])
 
   // 键盘事件处理器
-  const handleKeyDown = useCallback(
-    (event: KeyboardEvent) => {
-      console.log("监听到了键盘事件")
-      const target = event.target as HTMLElement
-      const selector = getSelector(target)
+  const handleKeyDown = useCallback((event: KeyboardEvent) => {
+    const target = event.target as HTMLElement
+    const selector = getSelector(target)
 
-      setRecordedActions((prev) => [
-        ...prev,
-        {
-          type: "keydown",
-          target: selector,
-          key: event.key,
-          keyCode: event.keyCode,
-          timestamp: Date.now()
-        }
-      ])
-    },
-    [isRecording]
-  )
+    setRecordedActions((prev) => [
+      ...prev,
+      {
+        type: "keydown",
+        target: selector,
+        key: event.key,
+        keyCode: event.keyCode,
+        code: event.code,
+        timestamp: Date.now()
+      }
+    ])
+  }, [])
 
   // 滚动事件处理器
   const handleScroll = useCallback(
@@ -107,7 +101,7 @@ export const RecorderPanel: React.FC<RecorderPanelProps> = ({
         }
       ])
     }, 300),
-    [isRecording]
+    []
   )
 
   // 保存录制功能
@@ -155,19 +149,19 @@ export const RecorderPanel: React.FC<RecorderPanelProps> = ({
   // 注册事件监听器
   useEffect(() => {
     if (isRecording) {
-      document.addEventListener("click", handleClick, true)
-      document.addEventListener("keydown", handleKeyDown, true)
-      document.addEventListener("scroll", handleScroll, true)
+      document.addEventListener("click", handleClick, { capture: true })
+      document.addEventListener("keydown", handleKeyDown, { capture: true })
+      document.addEventListener("scroll", handleScroll, { capture: true })
     } else {
-      document.removeEventListener("click", handleClick, true)
-      document.removeEventListener("keydown", handleKeyDown, true)
-      document.removeEventListener("scroll", handleScroll, true)
+      document.removeEventListener("click", handleClick, { capture: true })
+      document.removeEventListener("keydown", handleKeyDown, { capture: true })
+      document.removeEventListener("scroll", handleScroll, { capture: true })
     }
 
     return () => {
-      document.removeEventListener("click", handleClick, true)
-      document.removeEventListener("keydown", handleKeyDown, true)
-      document.removeEventListener("scroll", handleScroll, true)
+      document.removeEventListener("click", handleClick, { capture: true })
+      document.removeEventListener("keydown", handleKeyDown, { capture: true })
+      document.removeEventListener("scroll", handleScroll, { capture: true })
     }
   }, [isRecording, handleClick, handleKeyDown, handleScroll])
 
