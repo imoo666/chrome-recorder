@@ -1,8 +1,10 @@
 // 定义操作类型
 export interface Action {
-  type: "click" | "input" | "scroll"
+  type: "click" | "scroll" | "keydown"
   target: string
   value?: string
+  key?: string
+  keyCode?: number
   timestamp: number
   scrollX?: number
   scrollY?: number

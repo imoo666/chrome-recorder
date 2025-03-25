@@ -8,7 +8,11 @@ export function getSelector(element: Element | null): string {
       // 匹配以"-数字"结尾的ID
       /^#.*-\d+$/,
       // 匹配以"_数字"结尾的ID
-      /^#.*_\d+$/
+      /^#.*_\d+$/,
+      // 匹配以 ed 结尾的 class
+      /.*ed$/,
+      // 匹配所有含有 checked 的任意选择器
+      /.*checked.*$/
     ]
   })
 }

@@ -119,7 +119,7 @@ export const ReplayerList = ({ setIsCreated }: Props) => {
         <div className="text-xs text-gray-500">选中录像并进行回放</div>
       </div>
       <div className="flex items-center gap-2 w-full">
-        <Tooltip content="创建新录制">
+        <Tooltip content="创建新录像">
           <IconPlus
             className="cursor-pointer"
             onClick={() => setIsCreated(true)}
@@ -151,7 +151,7 @@ export const ReplayerList = ({ setIsCreated }: Props) => {
       <div className="w-full">
         {selectedRecording &&
           [
-            { label: "录制名称", field: "name" },
+            { label: "录像名称", field: "name" },
             { label: "录制时间", field: "timestamp" },
             { label: "操作数量", field: "count" }
           ].map((item) => (

@@ -1,3 +1,4 @@
+import { debounce } from "lodash"
 import React, { useCallback, useEffect, useState } from "react"
 
 import dayjs from "~node_modules/dayjs"
@@ -33,11 +34,18 @@ export const RecorderPanel: React.FC<RecorderPanelProps> = ({
 
   // 点击事件处理器
   const handleClick = useCallback(
-    (event: MouseEvent) => {
-      if (!isRecording) return
-
+    (event: PointerEvent) => {
       const target = event.target as HTMLElement
       const selector = getSelector(target)
+
+      // 如果是组件库的隐藏事件？
+      if (event.pointerId === -1) {
+        return
+      }
+      // 点击的是录制悬浮窗
+      if (selector.includes("plasmo")) {
+        return
+      }
 
       setRecordedActions((prev) => [
         ...prev,
@@ -51,20 +59,20 @@ export const RecorderPanel: React.FC<RecorderPanelProps> = ({
     [isRecording]
   )
 
-  // 输入事件处理器
-  const handleInput = useCallback(
-    (event: Event) => {
-      if (!isRecording) return
-
-      const target = event.target as HTMLInputElement
+  // 键盘事件处理器
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      console.log("监听到了键盘事件")
+      const target = event.target as HTMLElement
       const selector = getSelector(target)
 
       setRecordedActions((prev) => [
         ...prev,
         {
-          type: "input",
+          type: "keydown",
           target: selector,
-          value: target.value,
+          key: event.key,
+          keyCode: event.keyCode,
           timestamp: Date.now()
         }
       ])
@@ -74,9 +82,7 @@ export const RecorderPanel: React.FC<RecorderPanelProps> = ({
 
   // 滚动事件处理器
   const handleScroll = useCallback(
-    (event: Event) => {
-      if (!isRecording) return
-
+    debounce((event: Event) => {
       const target = event.target as HTMLElement
       const selector = getSelector(target)
 
@@ -90,30 +96,17 @@ export const RecorderPanel: React.FC<RecorderPanelProps> = ({
           ? window.scrollY
           : (target as Element).scrollTop
 
-      // 防止频繁记录滚动事件，每300ms最多记录一次同一元素的滚动
-      setRecordedActions((prev) => {
-        const lastAction = prev[prev.length - 1]
-        if (
-          lastAction &&
-          lastAction.type === "scroll" &&
-          lastAction.target === selector &&
-          Date.now() - lastAction.timestamp < 300
-        ) {
-          return prev
+      setRecordedActions((prev) => [
+        ...prev,
+        {
+          type: "scroll",
+          target: selector,
+          timestamp: Date.now(),
+          scrollX,
+          scrollY
         }
-
-        return [
-          ...prev,
-          {
-            type: "scroll",
-            target: selector,
-            timestamp: Date.now(),
-            scrollX,
-            scrollY
-          }
-        ]
-      })
-    },
+      ])
+    }, 300),
     [isRecording]
   )
 
@@ -163,20 +156,20 @@ export const RecorderPanel: React.FC<RecorderPanelProps> = ({
   useEffect(() => {
     if (isRecording) {
       document.addEventListener("click", handleClick, true)
-      document.addEventListener("input", handleInput, true)
+      document.addEventListener("keydown", handleKeyDown, true)
       document.addEventListener("scroll", handleScroll, true)
     } else {
       document.removeEventListener("click", handleClick, true)
-      document.removeEventListener("input", handleInput, true)
+      document.removeEventListener("keydown", handleKeyDown, true)
       document.removeEventListener("scroll", handleScroll, true)
     }
 
     return () => {
       document.removeEventListener("click", handleClick, true)
-      document.removeEventListener("input", handleInput, true)
+      document.removeEventListener("keydown", handleKeyDown, true)
       document.removeEventListener("scroll", handleScroll, true)
     }
-  }, [isRecording, handleClick, handleInput, handleScroll])
+  }, [isRecording, handleClick, handleKeyDown, handleScroll])
 
   // 接收消息
   useEffect(() => {
@@ -201,10 +194,7 @@ export const RecorderPanel: React.FC<RecorderPanelProps> = ({
       title="录制工具"
       isVisible={isVisible}
       setIsVisible={setIsVisible}
-      containerClassName={
-        isRecording ? "opacity-100" : "opacity-70 hover:opacity-100"
-      }>
-      {/* 录制按钮容器 */}
+      containerClassName="opacity-70 hover:opacity-100">
       {isRecordingCompleted ? (
         <div className="flex gap-[8px]">
           <button
@@ -220,9 +210,7 @@ export const RecorderPanel: React.FC<RecorderPanelProps> = ({
         </div>
       ) : (
         <button
-          className={`w-full text-white border-none rounded px-[12px] py-[6px] cursor-pointer text-sm ${
-            isRecording ? "bg-red-500" : "bg-blue-500"
-          }`}
+          className="w-full text-white border-none rounded px-[12px] py-[6px] cursor-pointer text-sm bg-red-500"
           onClick={stopRecording}>
           结束录制
         </button>
@@ -234,7 +222,7 @@ export const RecorderPanel: React.FC<RecorderPanelProps> = ({
 
       {/* 提示信息 */}
       <div className="text-xs text-gray-500">
-        提示: 录制会捕获点击、输入和滚动操作
+        提示: 录制会捕获点击、键盘和滚动操作
       </div>
     </BasePanel>
   )

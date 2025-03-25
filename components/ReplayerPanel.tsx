@@ -72,10 +72,16 @@ export const ReplayerPanel: React.FC<ReplayerPanelProps> = ({
           case "click":
             element.click()
             break
-          case "input":
-            ;(element as HTMLInputElement).value = action.value || ""
-            element.dispatchEvent(new Event("input", { bubbles: true }))
-            element.dispatchEvent(new Event("change", { bubbles: true }))
+          case "keydown":
+            // 创建并分发一个键盘事件
+            const keyEvent = new KeyboardEvent("keydown", {
+              key: action.key,
+              keyCode: action.keyCode,
+              code: action.key,
+              bubbles: true,
+              cancelable: true
+            })
+            element.dispatchEvent(keyEvent)
             break
           case "scroll":
             if (
@@ -95,7 +101,7 @@ export const ReplayerPanel: React.FC<ReplayerPanelProps> = ({
         }
 
         // 等待一小段时间以便用户观察
-        await new Promise((resolve) => setTimeout(resolve, 500))
+        await new Promise((resolve) => setTimeout(resolve, 800))
 
         // 恢复元素样式
         element.style.backgroundColor = originalBackground

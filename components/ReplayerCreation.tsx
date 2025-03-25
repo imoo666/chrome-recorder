@@ -1,6 +1,7 @@
 import { useState } from "react"
 
 import { Button, Input } from "~node_modules/@arco-design/web-react/es"
+import dayjs from "~node_modules/dayjs"
 import { sendMessage } from "~utils/sendMessage"
 
 interface Props {
@@ -8,7 +9,7 @@ interface Props {
 }
 export const ReplayerCreation = ({ setIsCreated }: Props) => {
   const [name, setName] = useState<string>(
-    "replayer-" + Date.now().toString().slice(0, -3)
+    "recorder-" + dayjs().format("MMDD-HH:mm:ss")
   )
 
   const handleClick = () => {
