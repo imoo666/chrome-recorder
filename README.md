@@ -23,7 +23,7 @@
 1.  打开浏览器-拓展程序的开发模式
     ![image](https://github.com/user-attachments/assets/5b2619c3-52e2-4ced-99bd-2321e6cf46ca)
 
-2.  下载插件压缩包 https://github.com/imoo666/chrome-recorder/releases/tag/v1
+2.  下载插件压缩包 https://github.com/imoo666/chrome-recorder/releases (选择最新版本的 recorder-plugin.zip 即可)
 3.  双击**解压**，拖拽到刚才的浏览器-插件页面来，就会自动安装
     ![image](https://github.com/user-attachments/assets/2ef2088a-23f7-4a73-b0f8-c0e1037625b0)
 
