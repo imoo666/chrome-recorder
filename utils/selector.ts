@@ -9,15 +9,15 @@ export function getSelector(element: Element | null): string {
       // 匹配以"-数字"结尾的ID
       /^#.*-\d+$/,
       // 匹配以"_数字"结尾的ID
-      /^#.*_\d+$/,
+      /^#.*_\d+$/
 
-      /.*\[.*$/,
-      /.*focus.*$/,
-      /.*hover.*$/,
-      /.*active.*$/,
-      /.*select.*$/,
-      /.*check.*$/,
-      /.*open.*$/
+      // /.*\[.*$/,
+      // /.*focus.*$/,
+      // /.*hover.*$/,
+      // /.*active.*$/,
+      // /.*select.*$/,
+      // /.*check.*$/,
+      // /.*open.*$/
     ]
   })
 }
